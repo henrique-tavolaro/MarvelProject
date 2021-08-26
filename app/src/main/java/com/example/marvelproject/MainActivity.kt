@@ -24,10 +24,16 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             viewModel.searchCharacter("iron man")
-
+            val result = viewModel.result.value
             MarvelProjectTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+
+                    result?.let {
+                        print(result.toString())
+                        println(result.toString())
+                        Text(result.toString())
+                    }
 
                 }
             }

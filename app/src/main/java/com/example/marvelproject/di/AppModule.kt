@@ -1,10 +1,6 @@
 package com.example.marvelproject.di
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.marvelproject.BASE_URL
-import com.example.marvelproject.PRIVATE_KEY
-import com.example.marvelproject.PUBLIC_KEY
 import com.example.marvelproject.datasource.RetrofitService
 import com.example.marvelproject.repositories.MarvelRepository
 import com.example.marvelproject.repositories.MarvelRepositoryImpl
@@ -17,9 +13,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigInteger
-import java.security.MessageDigest
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
