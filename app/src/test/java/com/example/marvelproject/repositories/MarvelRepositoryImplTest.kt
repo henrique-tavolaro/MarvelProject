@@ -1,6 +1,7 @@
 package com.example.marvelproject.repositories
 
 import com.example.marvelproject.BASE_URL
+import com.example.marvelproject.PAGE_SIZE
 import com.example.marvelproject.datasource.MockWebServerResponse.searchResultResponse
 import com.example.marvelproject.datasource.RetrofitService
 import com.example.marvelproject.model.Data
@@ -27,6 +28,7 @@ class MarvelRepositoryImplTest{
     private val DUMMY_QUERY = "Iron Man"
     private val DUMMY_TS = "1234"
     private val DUMMY_HASH = "123123"
+    private val OFFSET = 0
 
     //system in test
     private lateinit var repository: MarvelRepository
@@ -57,7 +59,7 @@ class MarvelRepositoryImplTest{
                 .setBody(searchResultResponse)
         )
 
-        val flowItems = repository.searchCharacter(DUMMY_QUERY, DUMMY_TS, DUMMY_TOKEN, DUMMY_HASH).toList()
+        val flowItems = repository.searchCharacter(DUMMY_QUERY, PAGE_SIZE, OFFSET, DUMMY_TS, DUMMY_TOKEN, DUMMY_HASH).toList()
 
         //first emission should be loading
         assert(flowItems[0].loading)
@@ -82,7 +84,7 @@ class MarvelRepositoryImplTest{
                 .setBody("{}")
         )
 
-        val flowItems = repository.searchCharacter(DUMMY_QUERY, DUMMY_TS, DUMMY_TOKEN, DUMMY_HASH).toList()
+        val flowItems = repository.searchCharacter(DUMMY_QUERY, PAGE_SIZE, OFFSET, DUMMY_TS, DUMMY_TOKEN, DUMMY_HASH).toList()
 
         //first emission should be loading
         assert(flowItems[0].loading)

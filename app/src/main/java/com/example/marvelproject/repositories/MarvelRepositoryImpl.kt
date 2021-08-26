@@ -13,6 +13,8 @@ class MarvelRepositoryImpl @Inject constructor(
 
     override suspend fun searchCharacter(
         name: String,
+        limit: Int,
+        offset: Int,
         ts: String,
         apikey: String,
         hash: String
@@ -20,7 +22,7 @@ class MarvelRepositoryImpl @Inject constructor(
         try {
             emit(DataState.loading())
 
-            val response = retrofitService.search(name, ts, apikey, hash)
+            val response = retrofitService.search(name, limit, offset, ts, apikey, hash)
             emit(DataState.success(response))
         } catch (e: Exception) {
             emit(DataState.error<Response>(e.message ?: "Unknown Error"))

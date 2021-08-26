@@ -8,7 +8,9 @@ interface RetrofitService {
 
     @GET("characters")
     suspend fun search(
-        @Query("name") name: String,
+        @Query("nameStartsWith") name: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
         @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String

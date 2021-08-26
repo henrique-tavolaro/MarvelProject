@@ -8,6 +8,8 @@ interface MarvelRepository {
 
     suspend fun searchCharacter(
         name: String,
+        limit: Int,
+        offset: Int,
         ts: String,
         apikey: String,
         hash: String

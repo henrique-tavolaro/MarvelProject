@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 import java.math.BigInteger
 import java.security.MessageDigest
 import javax.inject.Inject
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class MarvelViewModel @Inject constructor(
@@ -24,7 +26,17 @@ class MarvelViewModel @Inject constructor(
 
     val result : MutableState<List<Result>> = mutableStateOf(listOf())
 
+    val numPages = mutableStateOf(1)
 
+    val page = mutableStateOf(1)
+
+    val nameSearch = mutableStateOf("")
+
+    val textSearch = mutableStateOf("")
+
+    fun onTextSearchChanged(text: String) {
+        textSearch.value = text
+    }
 
     fun searchCharacter(
         name: String
@@ -36,8 +48,12 @@ class MarvelViewModel @Inject constructor(
             val input = ts + PRIVATE_KEY + PUBLIC_KEY
             val hash = BigInteger(1, md.digest(input.toByteArray())).toString(16)
 
+            val offset = if(page.value == 1) 0 else PAGE_SIZE * page.value
+
             repository.searchCharacter(
                 name = name,
+                limit = PAGE_SIZE,
+                offset = offset,
                 ts = ts,
                 apikey = PUBLIC_KEY,
                 hash = hash
@@ -45,8 +61,20 @@ class MarvelViewModel @Inject constructor(
                 loading.value = dataState.loading
 
                 dataState.data?.let {
+
+
+
+                    if(it.data.total > PAGE_SIZE){
+                        val rest = it.data.total % PAGE_SIZE
+                        numPages.value = (it.data.total + rest)/ PAGE_SIZE
+                    }
+
                     result.value = it.data.results
 
+                    Log.d(DEBUG_TAG, "result.value: ${result.value}")
+                    Log.d(DEBUG_TAG, "numpages.value: ${numPages.value}")
+                    Log.d(DEBUG_TAG, "page.value: ${page.value}")
+                    Log.d(DEBUG_TAG, "total: ${it.data.total}")
 
                 }
 
@@ -58,6 +86,78 @@ class MarvelViewModel @Inject constructor(
         }
     }
 
+    fun nextPage(){
+      viewModelScope.launch {
+          if(page.value < numPages.value){
+              page.value = page.value + 1
+
+              val ts = System.currentTimeMillis().toString()
+              val md = MessageDigest.getInstance("MD5")
+              val input = ts + PRIVATE_KEY + PUBLIC_KEY
+              val hash = BigInteger(1, md.digest(input.toByteArray())).toString(16)
+
+              val offset = if(page.value == 1) 0 else PAGE_SIZE * page.value
+
+              repository.searchCharacter(
+                  name = nameSearch.value,
+                  limit = PAGE_SIZE,
+                  offset = offset,
+                  ts = ts,
+                  apikey = PUBLIC_KEY,
+                  hash = hash
+              ).onEach { dataState ->
+                  loading.value = dataState.loading
+
+                  dataState.data?.let {
+
+                      result.value = it.data.results
+                  }
+
+                  dataState.error?.let {
+                      Log.d(DEBUG_TAG, it)
+
+                  }
+              }.launchIn(viewModelScope)
+          }
 
 
+      }
+
+    }
+
+    fun previusPage(){
+        viewModelScope.launch {
+            if(page.value > 1) {
+                page.value = page.value + 1
+
+                val ts = System.currentTimeMillis().toString()
+                val md = MessageDigest.getInstance("MD5")
+                val input = ts + PRIVATE_KEY + PUBLIC_KEY
+                val hash = BigInteger(1, md.digest(input.toByteArray())).toString(16)
+
+                val offset = if(page.value == 1) 0 else PAGE_SIZE * page.value
+
+                repository.searchCharacter(
+                    name = nameSearch.value,
+                    limit = PAGE_SIZE,
+                    offset = offset,
+                    ts = ts,
+                    apikey = PUBLIC_KEY,
+                    hash = hash
+                ).onEach { dataState ->
+                    loading.value = dataState.loading
+
+                    dataState.data?.let {
+
+                        result.value = it.data.results
+                    }
+
+                    dataState.error?.let {
+                        Log.d(DEBUG_TAG, it)
+
+                    }
+                }.launchIn(viewModelScope)
+            }
+        }
+    }
 }
