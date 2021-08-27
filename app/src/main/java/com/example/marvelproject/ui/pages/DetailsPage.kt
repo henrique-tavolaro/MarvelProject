@@ -66,7 +66,7 @@ fun DetailsPage(
                 }
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
-                    text = result!!.name,
+                    text = result.name,
                     fontFamily = appFontFamily,
                     fontWeight = FontWeight.Black,
                     fontSize = 24.sp)
