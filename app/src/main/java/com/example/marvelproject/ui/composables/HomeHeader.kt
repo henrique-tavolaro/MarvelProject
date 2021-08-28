@@ -1,6 +1,7 @@
 package com.example.marvelproject.ui.composables
 
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.marvelproject.MarvelViewModel
+import com.example.marvelproject.ui.MarvelViewModel
 import com.example.marvelproject.ui.theme.Red
 import com.example.marvelproject.ui.theme.appFontFamily
 
@@ -25,6 +26,7 @@ import com.example.marvelproject.ui.theme.appFontFamily
 fun HomeHeader(
     viewModel: MarvelViewModel,
     editText: String,
+    context: Context
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -74,7 +76,7 @@ fun HomeHeader(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         viewModel.resetSearchParams()
-                        viewModel.searchCharacter(editText)
+                        viewModel.searchCharacter(editText, context)
                         keyboardController?.hide()
                     }),
                 singleLine = true

@@ -1,5 +1,6 @@
 package com.example.marvelproject.ui.composables
 
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -17,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.marvelproject.MarvelViewModel
+import com.example.marvelproject.ui.MarvelViewModel
 import com.example.marvelproject.ui.theme.Red
 import com.example.marvelproject.ui.theme.appFontFamily
 
@@ -26,7 +27,8 @@ fun LazyRowItem(
     pageNumber: Int,
     page: MutableState<Int>,
     viewModel: MarvelViewModel,
-    nameSearch: MutableState<String>
+    nameSearch: MutableState<String>,
+    context: Context
 
 ){
 
@@ -42,7 +44,9 @@ fun LazyRowItem(
             .width(36.dp)
             .clickable {
                 page.value = pageNumber
-                viewModel.searchCharacter(nameSearch.value)
+                viewModel.searchCharacter(
+                    name = nameSearch.value,
+                context = context)
             },
         backgroundColor = color,
         border = BorderStroke(1.dp, color = Red),

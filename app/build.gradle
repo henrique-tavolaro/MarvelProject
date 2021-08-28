@@ -9,6 +9,27 @@ plugins {
 }
 
 android {
+        testOptions {
+            unitTests.includeAndroidResources = true
+        }
+
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+        exclude("META-INF/*.kotlin_module")
+    }
+
     compileSdk 30
 
     defaultConfig {
@@ -18,11 +39,12 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.marvelproject.MyTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
     }
+
 
     buildTypes {
         release {
@@ -43,6 +65,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
+
+    configurations.all{
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.0'
+    }
 }
 
 dependencies {
@@ -53,7 +79,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.3.0'
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
     implementation 'androidx.appcompat:appcompat:1.3.0-beta01'
     //retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
@@ -78,13 +104,19 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     //icons
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "com.google.code.gson:gson:2.8.6"
 
-
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:$hilt_version")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+    androidTestImplementation "androidx.test:core-ktx:1.4.0"
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
 }

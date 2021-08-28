@@ -1,36 +1,26 @@
 package com.example.marvelproject.ui.pages
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
+import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.marvelproject.MarvelViewModel
+import com.example.marvelproject.ui.MarvelViewModel
 import com.example.marvelproject.ui.composables.*
 import com.example.marvelproject.ui.fragments.HomeFragmentDirections
 import com.example.marvelproject.ui.theme.MarvelProjectTheme
@@ -42,7 +32,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomePage(
     viewModel: MarvelViewModel,
-    navController: NavController
+    navController: NavController,
+    context: Context
 ) {
 
     val loading = viewModel.loading
@@ -77,7 +68,7 @@ fun HomePage(
                                         scrollOffset = page.value
                                     )
                                 }
-                                viewModel.previusPage()
+                                viewModel.previusPage(context = context)
                             },
                             icon = Icons.Filled.ArrowLeft,
                             contentDescription = "Arrow back icon"
@@ -97,7 +88,8 @@ fun HomePage(
                                         pageNumber = pageNumber,
                                         page = page,
                                         viewModel = viewModel,
-                                        nameSearch = nameSearch
+                                        nameSearch = nameSearch,
+                                        context = context
                                     )
                                 }
                             }
@@ -113,10 +105,10 @@ fun HomePage(
                                         scrollOffset = page.value
                                     )
                                 }
-                                viewModel.nextPage()
+                                viewModel.nextPage(context = context)
                             },
                             icon = Icons.Filled.ArrowRight,
-                            contentDescription = "Arrow fowart icon"
+                            contentDescription = "Arrow forward icon"
                         )
 
                     }
@@ -129,7 +121,8 @@ fun HomePage(
                     Column() {
                         HomeHeader(
                             viewModel = viewModel,
-                            editText = editText
+                            editText = editText,
+                            context = context
                         )
                         Text(
                             modifier = Modifier
