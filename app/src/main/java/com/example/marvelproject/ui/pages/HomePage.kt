@@ -57,68 +57,15 @@ fun HomePage(
         Surface() {
             Scaffold(
                 bottomBar = {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 30.dp, end = 30.dp, bottom = 24.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        BottomBarIcon(
-                            modifier = Modifier
-                                .size(150.dp)
-                                .weight(1f),
-                            onClick = {
-                                coroutineScope.launch {
-                                    listState.animateScrollToItem(
-                                        index = page.value - 2,
-                                        scrollOffset = page.value
-                                    )
-                                }
-                                viewModel.previusPage(context = context)
-                            },
-                            icon = Icons.Filled.ArrowLeft,
-                            contentDescription = "Arrow back icon"
-                        )
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 50.dp)
-                        ) {
-
-                            LazyRow(
-                                modifier = Modifier.testTag(TAG_LAZY_ROW),
-                                state = listState
-                            ) {
-                                items(items = pageNumberList) { pageNumber ->
-
-                                    LazyRowItem(
-                                        pageNumber = pageNumber,
-                                        page = page,
-                                        viewModel = viewModel,
-                                        nameSearch = nameSearch,
-                                        context = context
-                                    )
-                                }
-                            }
-                        }
-                        BottomBarIcon(
-                            modifier = Modifier
-                                .size(150.dp)
-                                .weight(1f),
-                            onClick = {
-                                coroutineScope.launch {
-                                    listState.animateScrollToItem(
-                                        index = page.value - 3,
-                                        scrollOffset = page.value
-                                    )
-                                }
-                                viewModel.nextPage(context = context)
-                            },
-                            icon = Icons.Filled.ArrowRight,
-                            contentDescription = "Arrow forward icon"
-                        )
-
-                    }
+                    BottomBarHomePage(
+                        coroutineScope = coroutineScope,
+                        listState = listState,
+                        page = page,
+                        viewModel = viewModel,
+                        context = context,
+                        pageNumberList = pageNumberList,
+                        nameSearch = nameSearch
+                    )
                 }
             ) {
                 Column(

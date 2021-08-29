@@ -20,6 +20,7 @@ import androidx.core.net.toUri
 import com.example.marvelproject.DEFAULT_RECTANGLE_IMAGE
 import com.example.marvelproject.TAG_DETAILS_NAME
 import com.example.marvelproject.model.Result
+import com.example.marvelproject.ui.composables.TopAppBarDetailsPage
 import com.example.marvelproject.ui.composables.loadImageUri
 import com.example.marvelproject.ui.theme.MarvelProjectTheme
 import com.example.marvelproject.ui.theme.appFontFamily
@@ -33,18 +34,7 @@ fun DetailsPage(
     MarvelProjectTheme() {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {},
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                onClick()
-                            },
-                        ) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = null)
-                        }
-                    }
-                )
+                TopAppBarDetailsPage(onClick)
             }
         ) {
             Column() {
