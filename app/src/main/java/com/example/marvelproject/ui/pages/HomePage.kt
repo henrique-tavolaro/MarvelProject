@@ -1,6 +1,7 @@
 package com.example.marvelproject.ui.pages
 
 import android.content.Context
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,16 +14,21 @@ import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.marvelproject.TAG_LAZY_COLUMN
+import com.example.marvelproject.TAG_LAZY_ROW
+import com.example.marvelproject.model.Result
 import com.example.marvelproject.ui.MarvelViewModel
 import com.example.marvelproject.ui.composables.*
-import com.example.marvelproject.ui.fragments.HomeFragmentDirections
+import com.example.marvelproject.ui.navigation.Screen
 import com.example.marvelproject.ui.theme.MarvelProjectTheme
 import com.example.marvelproject.ui.theme.Red
 import com.example.marvelproject.ui.theme.appFontFamily
@@ -32,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomePage(
     viewModel: MarvelViewModel,
-    navController: NavController,
+    onClick: (result: Result) -> Unit,
     context: Context
 ) {
 
@@ -80,6 +86,7 @@ fun HomePage(
                         ) {
 
                             LazyRow(
+                                modifier = Modifier.testTag(TAG_LAZY_ROW),
                                 state = listState
                             ) {
                                 items(items = pageNumberList) { pageNumber ->
@@ -137,16 +144,15 @@ fun HomePage(
                         )
                         CircularIndicator(loading = loading.value)
 
-                        LazyColumn() {
+                        LazyColumn(
+                            modifier = Modifier
+                                .testTag(TAG_LAZY_COLUMN)
+                        ) {
                             items(items = result) {
                                 LazyColumnItemTile(
                                     result = it,
-                                    onClick = {
-                                        navController.navigate(
-                                            HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                                                it
-                                            )
-                                        )
+                                    onClick = { it ->
+                                        onClick(it)
                                     }
                                 )
                                 Divider(

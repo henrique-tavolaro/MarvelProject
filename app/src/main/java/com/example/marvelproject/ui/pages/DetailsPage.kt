@@ -12,12 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.navigation.NavController
 import com.example.marvelproject.DEFAULT_RECTANGLE_IMAGE
+import com.example.marvelproject.TAG_DETAILS_NAME
 import com.example.marvelproject.model.Result
 import com.example.marvelproject.ui.composables.loadImageUri
 import com.example.marvelproject.ui.theme.MarvelProjectTheme
@@ -26,7 +27,8 @@ import com.example.marvelproject.ui.theme.appFontFamily
 @Composable
 fun DetailsPage(
     result: Result?,
-    navController: NavController) {
+    onClick: () -> Unit
+) {
 
     MarvelProjectTheme() {
         Scaffold(
@@ -36,7 +38,7 @@ fun DetailsPage(
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                      navController.popBackStack()
+                                onClick()
                             },
                         ) {
                             Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -46,8 +48,8 @@ fun DetailsPage(
             }
         ) {
             Column() {
-                result!!.thumbnail.let {
-                    val url ="${it.path}.${it.extension}"
+                result?.thumbnail.let {
+                    val url = "${it?.path}.${it?.extension}"
                     val image =
                         loadImageUri(
                             url = url.toUri(),
@@ -65,11 +67,14 @@ fun DetailsPage(
                     }
                 }
                 Text(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
-                    text = result.name,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 24.dp)
+                        .testTag(TAG_DETAILS_NAME),
+                    text = result!!.name,
                     fontFamily = appFontFamily,
                     fontWeight = FontWeight.Black,
-                    fontSize = 24.sp)
+                    fontSize = 24.sp
+                )
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = result.description,
@@ -78,13 +83,6 @@ fun DetailsPage(
                     fontSize = 20.sp
                 )
             }
-
         }
-
-
-
     }
-
-
-
 }

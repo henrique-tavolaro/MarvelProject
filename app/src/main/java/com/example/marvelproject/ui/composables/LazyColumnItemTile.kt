@@ -1,6 +1,5 @@
 package com.example.marvelproject.ui.composables
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,29 +12,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.navigation.NavController
-import com.example.marvelproject.DEBUG_TAG
 import com.example.marvelproject.DEFAULT_CIRCLE_IMAGE
+import com.example.marvelproject.TAG_LAZY_COLUMN_ITEM
 import com.example.marvelproject.model.Result
-import com.example.marvelproject.ui.fragments.HomeFragmentDirections
 import com.example.marvelproject.ui.theme.appFontFamily
-import com.google.gson.Gson
 
 @Composable
 fun LazyColumnItemTile(
     result: Result,
-    onClick: () -> Unit
+    onClick: (result: Result) -> Unit,
 ){
-
     Row(
         modifier = Modifier
             .padding(vertical = 18.dp, horizontal = 24.dp)
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick(result) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         result.thumbnail.let {
@@ -65,9 +61,6 @@ fun LazyColumnItemTile(
                 fontWeight = FontWeight.Normal,
                 color = Color.Black
             )
-
     }
-
-
 
 }

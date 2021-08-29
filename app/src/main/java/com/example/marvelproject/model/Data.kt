@@ -1,8 +1,5 @@
 package com.example.marvelproject.model
 
-
-import com.google.gson.annotations.SerializedName
-
 data class Data(
     val count: Int,
     val limit: Int,

@@ -2,8 +2,6 @@ package com.example.marvelproject.di
 
 import com.example.marvelproject.BASE_URL
 import com.example.marvelproject.datasource.RetrofitService
-import com.example.marvelproject.repositories.MarvelRepository
-import com.example.marvelproject.repositories.MarvelRepositoryImpl
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -35,14 +33,6 @@ class AppModule {
             .create(RetrofitService::class.java)
     }
 
-    @Singleton
-    @Provides
-    fun provideRepository(
-        retrofitService: RetrofitService
-    ): MarvelRepository {
-        return MarvelRepositoryImpl(
-            retrofitService = retrofitService
-        )
-    }
+
 
 }
